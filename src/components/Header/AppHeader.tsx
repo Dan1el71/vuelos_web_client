@@ -28,7 +28,7 @@ const AppHeader = () => {
             <Link
               className="px-5 py-4 font-normal hover:font-bold hover:border-b-2 hover:border-b-red-900"
               key={i}
-              to={`/${ref}`}
+              to={ref}
             >
               {name}
             </Link>
