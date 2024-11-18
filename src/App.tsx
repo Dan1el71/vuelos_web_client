@@ -1,5 +1,12 @@
+import AppHeader from '@components/header/AppHeader'
+
 function App() {
-  return <div>Test</div>
+  return (
+    <>
+      <AppHeader />
+      <main>Main Component</main>
+    </>
+  )
 }
 
 export default App
