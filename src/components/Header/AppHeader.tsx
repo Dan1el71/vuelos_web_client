@@ -18,7 +18,7 @@ const AppHeader = () => {
 
   return (
     <header className="bg-secondary shadow-xl">
-      <div className="flex flex-row justify-between mx-auto max-w-6xl min-h-14">
+      <div className="flex flex-row justify-between mx-auto max-w-6xl min-h-16">
         <div className="mx-10 my-auto">
           <h1 className="font-bold text-lg uppercase">Logo</h1>
         </div>
