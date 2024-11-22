@@ -1,8 +1,9 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import App from '../App'
 import AuthComponent from '@components/auth/AuthComponent'
-import LoginForm from '@components/auth/LoginEmailForm'
+import LoginUsernameForm from '@components/auth/LoginUsernameForm'
 import LoginPasswordForm from '@components/auth/LoginPasswordForm'
+import RegisterForm from '@components/auth/RegisterForm'
 
 const routes: RouteObject[] = [
   {
@@ -16,11 +17,15 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/login',
-        element: <LoginForm />,
+        element: <LoginUsernameForm />,
       },
       {
         path: '/login/password',
         element: <LoginPasswordForm />,
+      },
+      {
+        path: '/login/register',
+        element: <RegisterForm />,
       },
     ],
   },

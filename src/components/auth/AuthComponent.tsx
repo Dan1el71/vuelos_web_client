@@ -1,59 +1,86 @@
 import useAuthService from '@hooks/useAuthService'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Link, Outlet, redirect, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 
 export type LoginFormProps = {
-  handleSubmitEmail: (e: React.FormEvent<HTMLFormElement>) => void
+  handleSubmitUsername: (e: React.FormEvent<HTMLFormElement>) => void
   loading: boolean
-  emailError: string | null
-  email: string
-  setEmail: Dispatch<SetStateAction<string>>
+  usernameError: string | null
+  username: string
+  setUsername: Dispatch<SetStateAction<string>>
 }
 
-export type RegisterFormProps = {
+export type LoginPasswordProps = {
   handleSubmitLogin: (e: React.FormEvent<HTMLFormElement>) => void
   loading: boolean
-  emailError: string | null
+  usernameError: string | null
   password: string
-  email: string
+  username: string
   setPassword: Dispatch<SetStateAction<string>>
 }
 
+export type RegisterFormProps = {
+  handleSubmitRegister: (e: React.FormEvent<HTMLFormElement>) => void
+  loading: boolean
+  usernameError: string | null
+  password: string
+  setPassword: Dispatch<SetStateAction<string>>
+  confirmPassword: string
+  setConfirmPassword: Dispatch<SetStateAction<string>>
+}
+
 const LoginComponent = () => {
-  const [email, setEmail] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [emailError, setEmailError] = useState<string | null>(null)
+  const [confirmPassword, setConfirmPassword] = useState<string>('')
+  const [usernameError, setUsernameError] = useState<string | null>(null)
   const { nextStep, fetchNextStep, loading, loginService } = useAuthService()
+
   const navigate = useNavigate()
 
-  const handleSubmitEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitUsername = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const isValid = validateEmail(email)
+    const isValid = validateUsername(username)
 
     if (isValid) {
-      await fetchNextStep(email)
+      await fetchNextStep(username)
     }
   }
 
   const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setUsernameError(null)
 
-    await loginService(email, password)
-      .then(() => {
-        console.log('Logged in!')
+    await loginService(username, password)
+      .then((res) => {
+        if (res.status === 200) {
+          navigate('/')
+        }
       })
-      .catch((error) => {
-        setEmailError('La combinación de email y contraseña no es válida.')
-        console.error('Error logging in:', error)
+      .catch(() => {
+        setUsernameError('La combinación de email y contraseña no es válida.')
       })
   }
 
-  const validateEmail = (value: string): boolean => {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setEmailError('Por favor, ingresa un email válido.')
+  const handleSubmitRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setUsernameError(null)
+
+    if (password !== confirmPassword) {
+      setUsernameError('Las contraseñas no coinciden.')
+      return
+    }
+
+    console.log('Registering user...')
+    console.log(password, confirmPassword)
+  }
+
+  const validateUsername = (value: string): boolean => {
+    if (!value) {
+      setUsernameError('Por favor, ingresa un usuario válido.')
       return false
     } else {
-      setEmailError(null)
+      setUsernameError(null)
       return true
     }
   }
@@ -61,13 +88,17 @@ const LoginComponent = () => {
   useEffect(() => {
     switch (nextStep) {
       case 'USER_LOGIN':
-        navigate('/login/password')
+        navigate('/login/password', {
+          viewTransition: true,
+        })
         break
       case 'USER_REGISTER':
-        redirect('/register')
+        navigate('/login/register', {
+          viewTransition: true,
+        })
         break
       case 'ERROR':
-        setEmailError('Ocurrió un error. Por favor, intenta de nuevo.')
+        setUsernameError('Ocurrió un error. Por favor, intenta de nuevo.')
         break
       default:
         break
@@ -83,7 +114,7 @@ const LoginComponent = () => {
               Logo
             </h1>
           </Link>
-          <Link to="/" className="my-auto mx-4">
+          <Link viewTransition to="/" className="my-auto mx-4">
             <button className="flex flex-row text-sm font-medium text-white rounded-sm">
               <i className="bi bi-arrow-left-short mr-2"></i>
               <p>Volver</p>
@@ -93,7 +124,7 @@ const LoginComponent = () => {
       </header>
       <main
         id="emailForm"
-        className={`flex flex-col items-center ${
+        className={`flex flex-col items-center transition duration-300 ${
           loading ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
@@ -101,14 +132,17 @@ const LoginComponent = () => {
           context={
             {
               handleSubmitLogin,
-              handleSubmitEmail,
+              handleSubmitUsername,
+              handleSubmitRegister,
               loading,
-              emailError,
-              email,
-              setEmail,
+              usernameError,
+              username,
               password,
+              confirmPassword,
+              setUsername,
               setPassword,
-            } satisfies LoginFormProps | RegisterFormProps
+              setConfirmPassword,
+            } satisfies LoginFormProps | LoginPasswordProps | RegisterFormProps
           }
         />
       </main>

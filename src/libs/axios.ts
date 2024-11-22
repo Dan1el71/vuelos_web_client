@@ -15,18 +15,4 @@ authApi.interceptors.request.use((config) => {
   return config
 })
 
-authApi.interceptors.response.use(
-  (res) => {
-    return res
-  },
-  (err) => {
-    if (err.response && err.response.status === 401) {
-      localStorage.clear()
-      window.location.href = '/login'
-    }
-
-    return Promise.reject(err)
-  }
-)
-
 export default authApi

@@ -1,21 +1,21 @@
 import { useNavigate, useOutletContext } from 'react-router-dom'
-import { RegisterFormProps } from './AuthComponent'
+import { LoginPasswordProps } from './AuthComponent'
 import { useEffect } from 'react'
 
 const LoginPasswordForm = () => {
   const navigate = useNavigate()
   const {
-    emailError,
+    usernameError,
     loading,
     handleSubmitLogin: handleSubmit,
-    email,
+    username,
     password,
     setPassword,
-  } = useOutletContext<RegisterFormProps>()
+  } = useOutletContext<LoginPasswordProps>()
 
   useEffect(() => {
-    if (email === '') navigate('/login')
-  }, [email, navigate])
+    if (!username?.trim()) navigate('/login')
+  }, [username, navigate])
 
   return (
     <div className="mx-auto my-14">
@@ -24,8 +24,8 @@ const LoginPasswordForm = () => {
           Introduce tu contraseña
         </h1>
         <p className="font-normal text-[13px] my-4">
-          Introduce tu contraseña de ingreso para
-          <span className="font-semibold"> {email}</span>
+          Introduce tu contraseña de ingreso para el usuario
+          <span className="font-semibold"> {username}</span>
         </p>
       </div>
       <form className="flex flex-col my-4" onSubmit={handleSubmit}>
@@ -35,6 +35,7 @@ const LoginPasswordForm = () => {
         <input
           name="user password"
           value={password}
+          disabled={loading}
           onChange={(e) => setPassword(e.target.value)}
           className="border border-gray-400 px-2 py-2 rounded-[4px] my-2 text-[13px] focus:border-red-500"
           placeholder="Introduce tu contraseña"
@@ -44,9 +45,12 @@ const LoginPasswordForm = () => {
           autoComplete="current-password"
           required
         />
-        {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
+        {usernameError && (
+          <p className="text-red-500 text-xs">{usernameError}</p>
+        )}
 
         <button
+          disabled={loading}
           type="submit"
           className={`text-white text-sm font-medium px-3 py-2 my-2 border-blue-600 border bg-blue-600 rounded-md 
               ${

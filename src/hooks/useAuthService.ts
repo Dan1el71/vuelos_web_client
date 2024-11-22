@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { login, submitEmailService } from '../services/auth'
+import { login, register, submitEmailService } from '../services/auth'
 
 enum NextStepEnum {
   ERROR = 'ERROR',
@@ -40,13 +40,29 @@ const useAuthService = () => {
     try {
       const response = await login(email, password)
 
-      console.log(response)
-    } catch (error) {
-      console.error('Error logging in:', error)
+      if (response && response.status === 401) {
+        throw new Error('Unauthorized')
+      }
+
+      localStorage.setItem('authToken', response.data.token)
+      return response
+    } finally {
+      setLoading(false)
     }
   }
 
-  return { nextStep, fetchNextStep, loading, loginService }
+  const registerService = async (username: string, password: string) => {
+    setLoading(true)
+    try {
+      const response = await register(username, password)
+
+      return response
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return { nextStep, fetchNextStep, loading, loginService, registerService }
 }
 
 export default useAuthService

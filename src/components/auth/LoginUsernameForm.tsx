@@ -1,13 +1,13 @@
 import { useOutletContext } from 'react-router-dom'
 import { LoginFormProps } from './AuthComponent'
 
-const LoginForm = () => {
+const LoginUsernameForm = () => {
   const {
-    emailError,
+    usernameError,
     loading,
-    handleSubmitEmail: handleSubmit,
-    email,
-    setEmail,
+    handleSubmitUsername: handleSubmit,
+    username,
+    setUsername,
   } = useOutletContext<LoginFormProps>()
 
   return (
@@ -22,21 +22,23 @@ const LoginForm = () => {
       </div>
       <form className="flex flex-col my-4" onSubmit={handleSubmit}>
         <label htmlFor="emailInput" className="text-[13px] font-semibold">
-          E-mail
+          Usuario
         </label>
         <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           name="user email"
           className="border border-gray-400 px-2 py-2 rounded-[4px] my-2 text-[13px] focus:border-red-500"
-          placeholder="Indica tu dirección de email"
+          placeholder="Indica tu nombre de usuario"
           autoFocus={true}
-          type="email"
-          id="emailInput"
-          autoComplete="email"
+          type="text"
+          id="usernameInput"
+          autoComplete="username"
           required
         />
-        {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
+        {usernameError && (
+          <p className="text-red-500 text-xs">{usernameError}</p>
+        )}
 
         <button
           type="submit"
@@ -52,4 +54,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default LoginUsernameForm
