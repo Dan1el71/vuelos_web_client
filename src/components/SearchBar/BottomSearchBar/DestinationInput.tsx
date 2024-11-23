@@ -42,10 +42,8 @@ const DestinationInput: React.FC = () => {
 
     return (
         <div className="w-full px-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                Origen y destino
-            </label>
-            <div className="flex flex-col md:flex-row">
+            <br />
+            <div className="flex flex-col md:flex-row block mx-2 min-w-[100px]">
                 <div className="w-items-center mx-1 py-1 relative">
                     <input
                         type="text"
@@ -57,13 +55,13 @@ const DestinationInput: React.FC = () => {
                         }}
                         onBlur={() => {
                             handleValidation(origin, setOrigin);
-                            setShowOriginOptions(false); // Oculta las opciones al perder foco
+                            setShowOriginOptions(false);
                         }}
-                        onFocus={() => setShowOriginOptions(true)} // Muestra las opciones al enfocar
-                        placeholder="¿De dónde sales?"
+                        onFocus={() => setShowOriginOptions(true)}
+                        placeholder="Origen"
                         className="w-full py-3 px-4 border border-gray-300 rounded-lg text-sm shadow-sm
-              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out
-              placeholder-gray-400"
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out
+                        placeholder-gray-400"
                     />
                     {showOriginOptions && (
                         <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-md z-10">
@@ -72,7 +70,7 @@ const DestinationInput: React.FC = () => {
                                     <li
                                         key={option}
                                         className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                                        onMouseDown={() => setOrigin(option)} // MouseDown para evitar onBlur conflictivo
+                                        onMouseDown={() => setOrigin(option)}
                                     >
                                         {option}
                                     </li>
@@ -97,13 +95,13 @@ const DestinationInput: React.FC = () => {
                         }}
                         onBlur={() => {
                             handleValidation(destination, setDestination);
-                            setShowDestinationOptions(false); // Oculta las opciones al perder foco
+                            setShowDestinationOptions(false);
                         }}
-                        onFocus={() => setShowDestinationOptions(true)} // Muestra las opciones al enfocar
-                        placeholder="¿Adónde vas?"
+                        onFocus={() => setShowDestinationOptions(true)} 
+                        placeholder="Destino"
                         className="w-full py-3 px-4 border border-gray-300 rounded-lg text-sm shadow-sm
-              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out
-              placeholder-gray-400"
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out
+                        placeholder-gray-400"
                     />
                     {showDestinationOptions && (
                         <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-md z-10">
@@ -112,7 +110,7 @@ const DestinationInput: React.FC = () => {
                                     <li
                                         key={option}
                                         className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                                        onMouseDown={() => setDestination(option)} // MouseDown para evitar onBlur conflictivo
+                                        onMouseDown={() => setDestination(option)}
                                     >
                                         {option}
                                     </li>

@@ -2,7 +2,7 @@ import React from "react";
 
 const DatePicker: React.FC = () => {
     return (
-        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-2 md:w-1/2">
+        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-2 px-2">
             <div className="w-full">
                 <label htmlFor="check-in" className="mx-2 block text-sm font-medium text-gray-700 mb-1">
                     Fecha de entrada
