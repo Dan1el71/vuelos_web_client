@@ -43,7 +43,7 @@ const DestinationInput: React.FC = () => {
     return (
         <div className="w-full px-1">
             <br />
-            <div className="flex flex-col md:flex-row block mx-2 min-w-[100px]">
+            <div className="flex flex-col md:flex-row mx-2 min-w-[100px]">
                 <div className="w-items-center mx-1 py-1 relative">
                     <input
                         type="text"
