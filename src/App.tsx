@@ -1,6 +1,6 @@
-import AppHeader from '@components/Header/AppHeader'
 import Promotions from '@components/Promotions/Promotions'
 import SearchBar from '@components/SearchBar/SearchBar'
+import AppHeader from '@components/AppHeader'
 
 function App() {
   return (
