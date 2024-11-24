@@ -1,5 +1,9 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import App from '../App'
+import AuthComponent from '@components/auth/AuthComponent'
+import LoginUsernameForm from '@components/auth/LoginUsernameForm'
+import LoginPasswordForm from '@components/auth/LoginPasswordForm'
+import RegisterForm from '@components/auth/RegisterForm'
 
 const routes: RouteObject[] = [
   {
@@ -7,9 +11,27 @@ const routes: RouteObject[] = [
     element: <App />,
     errorElement: <div>Not found</div>, // Falta implementar componente de error
   },
+  {
+    path: '/login',
+    element: <AuthComponent />,
+    children: [
+      {
+        path: '/login',
+        element: <LoginUsernameForm />,
+      },
+      {
+        path: '/login/password',
+        element: <LoginPasswordForm />,
+      },
+      {
+        path: '/login/register',
+        element: <RegisterForm />,
+      },
+    ],
+  },
 ]
 
-export default createBrowserRouter(routes, {
+const router = createBrowserRouter(routes, {
   future: {
     v7_relativeSplatPath: true,
     v7_fetcherPersist: true,
@@ -18,3 +40,5 @@ export default createBrowserRouter(routes, {
     v7_skipActionErrorRevalidation: true,
   },
 })
+
+export default router

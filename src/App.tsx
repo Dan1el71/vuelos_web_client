@@ -1,4 +1,4 @@
-import AppHeader from '@components/header/AppHeader'
+import AppHeader from '@components/AppHeader'
 
 function App() {
   return (

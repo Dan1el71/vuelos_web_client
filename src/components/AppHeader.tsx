@@ -26,13 +26,18 @@ const AppHeader = () => {
         <nav className="my-auto">
           {navItems.map(({ name, ref }, i) => (
             <Link
-              className="px-5 py-4 font-normal hover:font-bold hover:border-b-2 hover:border-b-red-900"
+              className="px-5 py-5 font-normal hover:font-bold hover:border-b-2 hover:border-b-red-900"
               key={i}
               to={ref}
             >
               {name}
             </Link>
           ))}
+          <Link to="/login" className="mx-4">
+            <button className="text-white text-sm font-medium border-blue-600 border px-3 py-[6px] bg-blue-600 rounded-sm hover:bg-blue-700">
+              Iniciar Sesión
+            </button>
+          </Link>
         </nav>
       </div>
     </header>
