@@ -29,6 +29,7 @@ const AppHeader = () => {
         <nav className="my-auto">
           {navItems.map(({ name, ref }, i) => (
             <Link
+              viewTransition
               className="px-5 py-5 font-normal hover:font-bold hover:border-b-2 hover:border-b-red-900"
               key={i}
               to={ref}
