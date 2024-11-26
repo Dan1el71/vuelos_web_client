@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const FlightList = () => {
-  const { flights, error, loading } = useFlights()
+  const { allFlights: flights, error, loading } = useFlights()
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 

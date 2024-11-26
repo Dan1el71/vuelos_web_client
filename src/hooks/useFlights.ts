@@ -13,7 +13,7 @@ export type Flight = {
 }
 
 const useFlights = () => {
-  const [flights, setFlights] = useState<Flight[]>([])
+  const [allFlights, setAllFlights] = useState<Flight[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -23,7 +23,7 @@ const useFlights = () => {
         setLoading(true)
         const { status, data } = await getAllFlights()
 
-        if (status === 200 && Array.isArray(data)) setFlights(data)
+        if (status === 200 && Array.isArray(data)) setAllFlights(data)
         else setError('Error al cargar los vuelos.')
       } catch (err) {
         if ((err as AxiosError)?.response?.status === 404)
@@ -38,7 +38,7 @@ const useFlights = () => {
   }, [])
 
   return {
-    flights,
+    allFlights,
     loading,
     error,
   }
