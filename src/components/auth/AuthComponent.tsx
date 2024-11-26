@@ -1,31 +1,31 @@
 import useAuthService from '@hooks/useAuthService'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import AuthHeader from './AuthHeader'
 
-export type LoginFormProps = {
-  handleSubmitUsername: (e: React.FormEvent<HTMLFormElement>) => void
+export type BaseFormProps = {
   loading: boolean
   usernameError: string | null
+}
+
+export type LoginFormProps = BaseFormProps & {
+  handleSubmitUsername: (e: React.FormEvent<HTMLFormElement>) => void
   username: string
   setUsername: Dispatch<SetStateAction<string>>
 }
 
-export type LoginPasswordProps = {
+export type LoginPasswordProps = BaseFormProps & {
   handleSubmitLogin: (e: React.FormEvent<HTMLFormElement>) => void
-  loading: boolean
-  usernameError: string | null
-  password: string
   username: string
+  password: string
   setPassword: Dispatch<SetStateAction<string>>
 }
 
-export type RegisterFormProps = {
+export type RegisterFormProps = BaseFormProps & {
   handleSubmitRegister: (e: React.FormEvent<HTMLFormElement>) => void
-  loading: boolean
-  usernameError: string | null
   password: string
-  setPassword: Dispatch<SetStateAction<string>>
   confirmPassword: string
+  setPassword: Dispatch<SetStateAction<string>>
   setConfirmPassword: Dispatch<SetStateAction<string>>
 }
 
@@ -34,7 +34,8 @@ const LoginComponent = () => {
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [usernameError, setUsernameError] = useState<string | null>(null)
-  const { nextStep, fetchNextStep, loading, loginService } = useAuthService()
+  const { nextStep, fetchNextStep, loading, loginService, registerService } =
+    useAuthService()
 
   const navigate = useNavigate()
 
@@ -58,7 +59,7 @@ const LoginComponent = () => {
         }
       })
       .catch(() => {
-        setUsernameError('La combinación de email y contraseña no es válida.')
+        setUsernameError('La combinación de usuario y contraseña no es válida.')
       })
   }
 
@@ -71,8 +72,22 @@ const LoginComponent = () => {
       return
     }
 
-    console.log('Registering user...')
-    console.log(password, confirmPassword)
+    await registerService(username, password)
+      .then((res) => {
+        if (res.status === 200) {
+          navigate('/login/password', { viewTransition: true })
+          setPassword('')
+          alert('Usuario creado con éxito. Por favor, inicia sesión.')
+        }
+
+        if (res.status === 409) {
+          setUsernameError('El usuario ya existe.')
+        }
+      })
+      .catch((err) => {
+        setUsernameError('Ocurrió un error. Por favor, intenta de nuevo.')
+        console.error('Error registering user:', err)
+      })
   }
 
   const validateUsername = (value: string): boolean => {
@@ -107,21 +122,7 @@ const LoginComponent = () => {
 
   return (
     <>
-      <header className="bg-blue-800 shadow-xl">
-        <div className=" flex flex-row justify-between mx-auto max-w-6xl min-h-16">
-          <Link to="/" className="mx-10 my-auto flex flex-row">
-            <h1 className="font-bold text-lg uppercase text-primary tracking-widest">
-              Logo
-            </h1>
-          </Link>
-          <Link viewTransition to="/" className="my-auto mx-4">
-            <button className="flex flex-row text-sm font-medium text-white rounded-sm">
-              <i className="bi bi-arrow-left-short mr-2"></i>
-              <p>Volver</p>
-            </button>
-          </Link>
-        </div>
-      </header>
+      <AuthHeader />
       <main
         id="emailForm"
         className={`flex flex-col items-center transition duration-300 ${
