@@ -15,7 +15,7 @@ const routes: RouteObject[] = [
   {
     path: '/',
     element: <App />,
-    errorElement: <FourOhFour />, // Falta implementar componente de error
+    errorElement: <FourOhFour />,
   },
   {
     element: <ProtectedRoute />,
