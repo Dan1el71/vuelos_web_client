@@ -20,7 +20,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@libs/*": ["./src/libs/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@services/*": ["./src/services/*"],
+      "@styles/*": ["./src/assets/styles/*"],
+      "@middleware/*": ["./src/middleware/*"]
+    }
   },
   "include": ["src"]
 }
