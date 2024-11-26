@@ -1,111 +1,92 @@
-import React, { useEffect, useState } from 'react';
-/*import axios from 'axios';*/
+import useFlights from '@hooks/useFlights'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-interface Flight {
-  id: number;
-  origin: string;
-  destination: string;
-  date: string;
-  capacity: number;
-  airline: string;
-  logo: string;
-}
+const FlightList = () => {
+  const { flights, error, loading } = useFlights()
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
 
-const FlightList: React.FC = () => {
-  const [flights, setFlights] = useState<Flight[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  if (loading)
+    return <p className="text-center text-gray-500">Cargando vuelos...</p>
+  if (error) return <p className="text-center text-gray-500">{error}</p>
 
-  useEffect(() => {
-    /*
-    const fetchFlights = async () => {
-      try {
-        const response = await axios.get('/api/v1/vuelo');
-        setFlights(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Error al cargar los vuelos.');
-        setLoading(false);
-      }
-    };
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentFlights = flights.slice(startIndex, endIndex)
+  const totalPages = Math.ceil(flights.length / itemsPerPage)
 
-    fetchFlights();
-    */
-    
-    // Ejemplo de vuelos
-    const exampleFlights: Flight[] = [
-      {
-        id: 1,
-        origin: 'Bogotá',
-        destination: 'Medellín',
-        date: '2024-12-01',
-        capacity: 180,
-        airline: 'Avianca',
-        logo: 'src/assets/aviancaLogo.png',
-      },
-      {
-        id: 2,
-        origin: 'Miami',
-        destination: 'Nueva York',
-        date: '2024-12-02',
-        capacity: 220,
-        airline: 'American Airlines',
-        logo: 'src/assets/americanAirlines.png', 
-      },
-      {
-        id: 3,
-        origin: 'Ciudad de México',
-        destination: 'Cancún',
-        date: '2024-12-05',
-        capacity: 150,
-        airline: 'Aeroméxico',
-        logo: 'src/assets/aeromexicoLogo.png',
-      },
-    ];
-    
-    setTimeout(() => {
-      setFlights(exampleFlights);
-      setLoading(false);
-    }, 1);
-
-  }, []);
-
-  if (loading) return <p className="text-center text-gray-500">Cargando vuelos...</p>;
-  if (error) return <p className="text-center text-gray-500">{error}</p>;
+  if (flights.length === 0)
+    return (
+      <p className="text-center text-gray-500">No hay vuelos disponibles</p>
+    )
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-white rounded-lg shadow-lg">
-      {flights.map((flight) => (
-        <div
-          key={flight.id}
-          className="border border-gray-300 rounded-lg p-6 hover:shadow-xl transition-all transform hover:scale-105 bg-gradient-to-t from-sky-400 bg-sky-200"
-        >
-          <div className="flex items-center mb-4 space-x-4">
-            <img
-              src={flight.logo}
-              alt={`${flight.airline} logo`}
-              className="w-16 h-16 object-contain rounded-full"
-            />
-            <div>
-              <h3 className="text-lg font-semibold text-white">{flight.airline}</h3>
-              <p className="text-sm text-white">
-                <span className="font-semibold">Capacidad:</span> {flight.capacity} pasajeros
-              </p>
-            </div>
-          </div>
-          <p className="text-sm text-white">
-            <span className="font-semibold">Origen:</span> {flight.origin}
-          </p>
-          <p className="text-sm text-white">
-            <span className="font-semibold">Destino:</span> {flight.destination}
-          </p>
-          <p className="text-sm text-white">
-            <span className="font-semibold">Fecha:</span> {flight.date}
-          </p>
-        </div>
-      ))}
-    </div>
-  );
-};
+    <div className="p-4 bg-white rounded-lg shadow-lg min-h-screen">
+      <div className="flex  justify-end">
+        <Link viewTransition to={'/'} className="mx-4 mb-4">
+          <button className="text-white text-sm font-medium border-red-600 border px-3 py-[6px] bg-red-600 rounded-md hover:bg-red-700">
+            Volver
+          </button>
+        </Link>
+      </div>
+      <table className="w-full table-auto border-collapse border border-gray-300">
+        <thead className="bg-sky-400 text-white">
+          <tr>
+            <th className="border border-gray-300 px-4 py-2">Origen</th>
+            <th className="border border-gray-300 px-4 py-2">Destino</th>
+            <th className="border border-gray-300 px-4 py-2">Fecha</th>
+            <th className="border border-gray-300 px-4 py-2">Hora</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentFlights.map((flight) => (
+            <tr key={flight.id} className="hover:bg-sky-100 transition-colors">
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {flight.origen}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {flight.destino}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {flight.fechaSalida}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {flight.horaSalida}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-export default FlightList;
+      {/* Paginación */}
+      <div className="flex justify-center items-center mt-4 space-x-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className={`px-4 py-2 bg-gray-300 text-gray-700 rounded ${
+            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <p className="text-gray-700">
+          Página {currentPage} de {totalPages}
+        </p>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          className={`px-4 py-2 bg-gray-300 text-gray-700 rounded ${
+            currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default FlightList
