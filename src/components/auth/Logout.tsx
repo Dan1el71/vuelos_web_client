@@ -7,7 +7,9 @@ const Logout = () => {
   const navigate = useNavigate()
   useEffect(() => {
     logout()
-    navigate('/')
+    navigate('/', {
+      viewTransition: true,
+    })
   }, [logout, navigate])
 
   return <></>
