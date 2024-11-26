@@ -67,7 +67,6 @@ const useAuthService = () => {
 
   const logout = () => {
     localStorage.clear()
-    window.location.reload()
   }
 
   const isAuthenticaded = (): boolean => {
