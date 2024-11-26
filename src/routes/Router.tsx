@@ -4,6 +4,7 @@ import AuthComponent from '@components/auth/AuthComponent'
 import LoginUsernameForm from '@components/auth/LoginUsernameForm'
 import LoginPasswordForm from '@components/auth/LoginPasswordForm'
 import RegisterForm from '@components/auth/RegisterForm'
+import Logout from '@components/auth/Logout'
 
 const routes: RouteObject[] = [
   {
@@ -28,6 +29,10 @@ const routes: RouteObject[] = [
         element: <RegisterForm />,
       },
     ],
+  },
+  {
+    path: '/logout',
+    element: <Logout />,
   },
 ]
 

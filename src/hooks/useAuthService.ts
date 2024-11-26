@@ -43,8 +43,11 @@ const useAuthService = () => {
       if (response && response.status === 401) {
         throw new Error('Unauthorized')
       }
+      const { data } = response
 
-      localStorage.setItem('authToken', response.data.token)
+      localStorage.setItem('authToken', data.token)
+      localStorage.setItem('username', data.username)
+      localStorage.setItem('isAuth', 'true')
       return response
     } finally {
       setLoading(false)
@@ -62,7 +65,24 @@ const useAuthService = () => {
     }
   }
 
-  return { nextStep, fetchNextStep, loading, loginService, registerService }
+  const logout = () => {
+    localStorage.clear()
+    window.location.reload()
+  }
+
+  const isAuthenticaded = (): boolean => {
+    return localStorage.getItem('isAuth') === 'true'
+  }
+
+  return {
+    nextStep,
+    fetchNextStep,
+    loading,
+    loginService,
+    registerService,
+    isAuthenticaded,
+    logout,
+  }
 }
 
 export default useAuthService
