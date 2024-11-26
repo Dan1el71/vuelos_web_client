@@ -4,7 +4,7 @@ import React from 'react'
 const Promotions: React.FC = () => {
     return (
         <div className="promotions relative bg-gray-50 p-4 rounded-md shadow-md text-center overflow-hidden">
-
+            
             <div className="absolute top-0 left-0 w-[57%] h-full bg-cover bg-center z-0"
                 style={{
                     backgroundImage: `linear-gradient(to left, rgba(0, 0, 0, 0.5) 1%, rgba(0, 0, 0, 0) 100%), url('/src/assets/imagePromotions.jpg')`,

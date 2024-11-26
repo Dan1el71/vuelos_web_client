@@ -1,26 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
 
-const LinksMenu: React.FC = () => {
-    return (
-      <div className="flex items-center gap-4 py-1">
-        <Link
-          to="aerolineas"
+type LinkItem = {
+  label: string;
+  action: () => void;
+};
+
+interface LinksMenuProps {
+  links: LinkItem[];
+}
+
+const LinksMenu: React.FC<LinksMenuProps> = ({ links }) => {
+  return (
+    <div className="flex items-center gap-4 py-1">
+      {links.map((link, index) => (
+        <button
+          key={index}
+          onClick={link.action}
           className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 shadow-md hover:bg-blue-100 hover:text-blue-600 transition-all duration-200"
         >
-          Aerolíneas
-          <i className="bi bi-arrow-up-right"></i>
-        </Link>
-
-        <Link
-          to="vuelos"
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 shadow-md hover:bg-blue-100 hover:text-blue-600 transition-all duration-200"
-        >
-          Todos los vuelos
-          <i className="bi bi-arrow-up-right"></i>
-        </Link>
-      </div>
-    )
+          {link.label}
+        </button>
+      ))}
+    </div>
+  );
 };
 
 export default LinksMenu;
