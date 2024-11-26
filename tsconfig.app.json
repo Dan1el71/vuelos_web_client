@@ -26,7 +26,8 @@
       "@libs/*": ["./src/libs/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@services/*": ["./src/services/*"],
-      "@styles/*": ["./src/assets/styles/*"]
+      "@styles/*": ["./src/assets/styles/*"],
+      "@middleware/*": ["./src/middleware/*"]
     }
   },
   "include": ["src"]
