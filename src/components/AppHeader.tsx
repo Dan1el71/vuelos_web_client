@@ -37,7 +37,7 @@ const AppHeader = () => {
             </Link>
           ))}
           {isAuth() ? (
-            <Link to={'/logout'} className='mx-4'>
+            <Link viewTransition to={'/logout'} className="mx-4">
               <button className="text-white text-sm font-medium border-red-600 border px-3 py-[6px] bg-red-600 rounded-sm hover:bg-red-700">
                 Logout
               </button>
